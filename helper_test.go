@@ -46,8 +46,7 @@ func setupDB() {
 	queryers = append(queryers, conn0, conn1)
 
 	// Create & fill DB
-	cSQL := "DROP TABLE IF EXISTS " + testTable + ";" +
-		"CREATE TABLE " + testTable + " (id integer, name text);" +
+	cSQL := "CREATE TABLE " + testTable + " (id integer, name text);" +
 		"INSERT INTO " + testTable + " (id, name) VALUES (1,'one'),(2,'two'),(3,'three');"
 	if _, err = conn0.Exec(cSQL); err != nil {
 		panic(err)
@@ -55,16 +54,20 @@ func setupDB() {
 }
 
 func cleanDB() {
-	cSQL := "DROP TABLE $1;"
-	if _, err := conn0.Exec(cSQL, testTable); err != nil {
+	cSQL := "DROP TABLE " + testTable + ";"
+	if _, err := conn0.Exec(cSQL); err != nil {
 		panic(err)
 	}
 }
 
 func TestMain(m *testing.M) {
-	setupDB()
-	defer cleanDB()
-	os.Exit(m.Run())
+	main := func() int {
+		setupDB()
+		defer cleanDB()
+		return m.Run()
+	}
+	r := main()
+	os.Exit(r)
 }
 
 func TestMustPrepare(t *testing.T) {
