@@ -58,6 +58,13 @@ func cleanDB() {
 	if _, err := conn0.Exec(cSQL); err != nil {
 		panic(err)
 	}
+
+	if conn0 != nil {
+		conn0.Close()
+	}
+	if conn1 != nil {
+		conn1.Close()
+	}
 }
 
 func TestMain(m *testing.M) {
