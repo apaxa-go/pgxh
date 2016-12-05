@@ -9,7 +9,7 @@ addons:
 env:
   global:
     - PG_HOST=127.0.0.1
-    - PG_DATABASE=test
+    - PG_DATABASE=test_pghx
     - PG_USER=postgres
 before_install:
   - go get github.com/mattn/goveralls
